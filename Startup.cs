@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace api_versioning_demo
 {
@@ -31,7 +26,10 @@ namespace api_versioning_demo
                 
                 x.DefaultApiVersion = new ApiVersion(1, 0);
                 x.AssumeDefaultVersionWhenUnspecified = true;
+                // return the API version in response header 'api-supported-versions'
                 x.ReportApiVersions = true;
+                // HTTP Header-Based Versioning support
+                x.ApiVersionReader = new HeaderApiVersionReader("x-api-version");
             });
         }
 
